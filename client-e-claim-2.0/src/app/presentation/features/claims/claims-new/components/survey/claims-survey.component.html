@@ -1,0 +1,183 @@
+<main class="flex-1">
+  <div class="bg-white rounded-xl shadow">
+    <h2 class="text-lg font-semibold border-b border-gray-200 px-6 py-3">Survey details</h2>
+
+    <form [formGroup]="surveyForm" class="pb-4">
+      <div class="grid grid-cols-3 gap-18 px-6 py-2">
+        <div>
+          <label class="text-sm font-medium">Garage<span class="text-red-500">*</span></label>
+          <input value="Royal Road Port-Louis" formControlName="garage"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+            [ngClass]="{'border-red-500': isFieldInvalid('garage')}"/>
+          <div *ngIf="isFieldInvalid('garage')" class="text-red-500 text-xs mt-1">
+            Garage name is required
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Garage address<span class="text-red-500">*</span></label>
+          <input value="Royal Road Port-Louis" formControlName="garageAddress"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+            [ngClass]="{'border-red-500': isFieldInvalid('garageAddress')}"/>
+          <div *ngIf="isFieldInvalid('garageAddress')" class="text-red-500 text-xs mt-1">
+            Garage address is required
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Garage contact number<span class="text-red-500">*</span></label>
+          <input value="(230) 5 444 2000" formControlName="garageContactNumber"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+            [ngClass]="{'border-red-500': isFieldInvalid('garageContactNumber')} "/>
+          <div *ngIf="isFieldInvalid('garageContactNumber')" class="text-red-500 text-xs mt-1">
+            Garage contact number is required
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-18 px-6 py-2">
+        <div>
+          <label class="text-sm font-medium">EOR value<span class="text-red-500">*</span></label>
+          <input value="Rs. 950,000.00" formControlName="eorValue"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 focus:outline-none"
+            [ngClass]="{'border-red-500': isFieldInvalid('eorValue')} "/>
+          <div *ngIf="isFieldInvalid('eorValue')" class="text-red-500 text-xs mt-1">
+            EOR value is required
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-18 px-6 py-2">
+        <div>
+          <label class="text-sm font-medium">Invoice number<span class="text-red-500">*</span></label>
+          <input placeholder="E.g: VB101" formControlName="invoiceNumber"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+            [ngClass]="{'border-red-500': isFieldInvalid('invoiceNumber')} "/>
+          <div *ngIf="isFieldInvalid('invoiceNumber')" class="text-red-500 text-xs mt-1">
+            Invoice number is required
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Survey type<span class="text-red-500">*</span></label>
+          <select formControlName="surveyType"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+            [ngClass]="{'border-red-500': isFieldInvalid('surveyType')} ">
+            <option value="" [selected]="!surveyForm.value.surveyType" hidden>Select</option>
+            <option *ngFor="let type of surveyTypes" [value]="type.id">
+              {{ type.name }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('surveyType')" class="text-red-500 text-xs mt-1">
+            Survey type is required
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Date of survey<span class="text-red-500">*</span></label>
+          <input formControlName="dateOfSurvey" type="date"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+            [ngClass]="{'border-red-500': isFieldInvalid('dateOfSurvey')} "/>
+          <div *ngIf="isFieldInvalid('dateOfSurvey')" class="text-red-500 text-xs mt-1">
+            Date of survey is required
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-18 px-6 py-2">
+        <div>
+          <label class="text-sm font-medium">Time of survey<span class="text-red-500">*</span></label>
+          <input type="time" formControlName="timeOfSurvey"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+            [ngClass]="{'border-red-500': isFieldInvalid('timeOfSurvey')} "/>
+          <div *ngIf="isFieldInvalid('timeOfSurvey')" class="text-red-500 text-xs mt-1">
+            Time of survey is required
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Pre-Accident Value</label>
+          <input formControlName="preAccidentValue" placeholder="MUR E.g: 500,000"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+            [ngClass]="{'border-red-500': isFieldInvalid('preAccidentValue')} "/>
+          <div *ngIf="isFieldInvalid('preAccidentValue')" class="text-red-500 text-xs mt-1">
+            Pre-Accident Value is required
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Showroom Price</label>
+          <input formControlName="showroomPrice" placeholder="MUR E.g: 900,000"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-18 px-6 py-2">
+        <div>
+          <label class="text-sm font-medium">Wreck Value<span class="text-red-500">*</span></label>
+          <input formControlName="wreckValue" placeholder="MUR E.g: 100,000"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none" />
+        </div>
+        <div>
+          <label class="text-sm font-medium">Excess Applicable</label>
+          <input formControlName="excessApplicable" placeholder="MUR E.g: 100,000"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="bg-white rounded-xl shadow mt-6 pb-6">
+    <h2 class="text-lg font-semibold border-b border-gray-200 px-6 py-3">Pictures of damaged car</h2>
+
+    <!-- Upload Section -->
+    <div class="mx-6"><app-upload (filesSelected)="handleUploadedFiles($event)"></app-upload></div>
+  </div>
+
+  <div class="mt-6 mb-2">
+    <h3 class="">Document list</h3>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full">
+      <thead class="text-left tracking-wide">
+        <tr>
+          <th class="xl:w-4/5 lg:w-4/5 px-4 py-3">
+            <div class="border-r border-gray-200 pr-4 flex justify-between items-center">
+              <span>Attachments</span>
+              <button class="icon-button cursor-pointer">
+                <mat-icon class="text-gray-400">filter_alt</mat-icon>
+              </button>
+            </div>
+          </th>
+          <th class="px-4 py-3">
+            <div>Actions</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        <tr class="">
+          <td class="px-4 py-3">EOR1.pdf</td>
+
+          <td class="text-primary px-4 py-2">
+            <button class="cursor-pointer me-4">View</button>
+            <button class="cursor-pointer">Download</button>
+          </td>
+        </tr>
+        <tr class="">
+          <td class="px-4 py-3">EOR2.pdf</td>
+
+          <td class="text-primary px-4 py-2">
+            <button class="cursor-pointer me-4">View</button>
+            <button class="cursor-pointer">Download</button>
+          </td>
+        </tr>
+        <tr class="">
+          <td class="px-4 py-3">EOR3.pdf</td>
+
+          <td class="text-primary px-4 py-2">
+            <button class="cursor-pointer me-4">View</button>
+            <button class="cursor-pointer">Download</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>

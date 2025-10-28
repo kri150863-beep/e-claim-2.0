@@ -1,0 +1,10 @@
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    mat-icon{
+        font-size: 18px;
+        height: 20px;
+    }
+}

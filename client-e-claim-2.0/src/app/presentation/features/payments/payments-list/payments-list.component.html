@@ -1,0 +1,36 @@
+<main class="flex-1 overflow-y-auto">
+    <p>{{ paymentTitle }}</p>
+    <status-stats
+        [role]="role"
+        [payments]="payments"
+        [currentStatus]="currentStatus"
+        [currency]="currency"
+        [numberFormat]="numberFormat"
+        (change)="handleCurrentStatusChange($event)"
+    ></status-stats>
+    <div class="flex justify-between items-center">
+        <p>{{ listTitle }}</p>
+        <app-button *ngIf="exportColumns.length > 0" variant="contained" (click)="openExportDialog()">
+            <mat-icon start-icon>output</mat-icon>
+            Export
+        </app-button>
+    </div>
+    <payments-table
+        [vat]="vat"
+        [role]="role"
+        [payments]="filteredPayments"
+        [detailsFields]="detailsFields"
+        [tableDatas]="tableDatas"
+        [pTableDatas]="pTableDatas"
+        [formatValue]="formatValue"
+        [formatDatas]="formatDatas"
+        [columnProps]="columnProps"
+        [currentPage]="currentPage"
+        [numberFormat]="numberFormat"
+        [paymentTitle]="paymentTitle"
+        [inputDetailsFields]="inputDetailsFields"
+        [filters]="filters"
+        (sort)="toggleSort($event)"
+        (paginate)="currentPage = $event"
+    ></payments-table>
+</main>

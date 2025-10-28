@@ -1,0 +1,61 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.notification {
+    position: relative;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.badge {
+    position: absolute;
+    top: -2px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+    background-color: #e53935;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    // font-weight: bold;
+}
+
+.icon-gray {
+    color: gray;
+    /* ou color: #888, #aaa, etc. */
+}

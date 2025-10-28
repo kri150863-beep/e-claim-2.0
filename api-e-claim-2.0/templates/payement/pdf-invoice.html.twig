@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice {{ invoices.invoice_no }}</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Claim line */
+        .claim-line {
+            font-weight: 700;
+            font-size: 14px;
+            color: #111;
+            margin-right: 10px;
+        }
+        .status {
+            color: #f39c12;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* Meta table */
+        table.meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        table.meta-table th {
+            text-align: left;
+            font-weight: 700;
+            font-size: 11px;
+            color: #555;
+            padding: 4px 6px;
+            border: none;
+        }
+        table.meta-table td {
+            text-align: left;
+            padding: 4px 6px;
+            border: none;
+            font-weight: bold;
+        }
+
+        hr.separator {
+            border: none;
+            height: 2px;
+            background: #111;
+            margin: 8px 0 16px 0;
+        }
+
+        /* Summary table */
+        table.summary-table {
+            width: 40%; /* ou 100% si besoin pleine largeur */
+            border-collapse: collapse;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            font-size: 12px;
+        }
+
+        table.summary-table td {
+            border: 1px solid #f5f5f5;
+            padding: 8px 10px;
+        }
+
+        table.summary-table tr:nth-child(odd) td {
+            background: #fafafa;
+        }
+
+        table.summary-table .text-right {
+            text-align: right;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Claim + status -->
+    <div>
+        <span class="claim-line">Claim N°: {{ invoices.claim_number }}</span>
+        <span class="status">{{ invoices.status_name }}</span>
+    </div>
+
+    <!-- Meta table with 3 columns -->
+    <table class="meta-table">
+        <tbody>
+            <tr>
+                <th>Invoice Number</th>
+                <th>Client</th>
+                <th>SWAN Claim Handler</th>
+            </tr>
+            <tr>
+                <td>{{ invoices.invoice_no }}</td>
+                <td>{{ invoices.client }}</td>
+                <td>{{ invoices.attention }}</td>
+            </tr>
+            <tr>
+                <th>Invoice Date</th>
+                <th>Vehicle Registration Number</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>{{ invoices.invoice_date ? invoices.invoice_date|date('d-M-Y') : '-' }}</td>
+                <td>{{ invoices.registration_number }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr class="separator" />
+
+    <!-- Summary table -->
+    <table class="summary-table">
+        <tbody>
+            <tr>
+                <td>Amount</td>
+                <td class="text-right">Rs {{ invoices.claim_amount|number_format(2, '.', ',') }}</td>
+            </tr>
+            <tr>
+                <td>VAT</td>
+                <td class="text-right">{{ invoices.vat|number_format(2, '.', ',') }}%</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td class="text-right">Rs {{ invoices.total_amount|number_format(2, '.', ',') }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

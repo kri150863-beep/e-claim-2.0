@@ -1,0 +1,77 @@
+<style>
+    @page {
+        margin: 0;
+        margin-top: 40px;
+    }
+
+    body {
+        position: relative;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .kl-cell-padding {
+        padding: 0 10px;
+    }
+    
+    /* Styles pour le tableau des paiements */
+    .payment-table {
+        width: 100%;
+        margin-top: 20px;
+        font-size: 10px;
+    }
+    
+    .payment-table th {
+        background-color: #f2f2f2;
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+    
+    .payment-table td {
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+</style>
+
+<body>
+<div style="margin-right: 60px; margin-left: 60px; margin-bottom: 70px;">
+
+    <!-- Tableau des paiements -->
+    <table class="payment-table">
+        <thead>
+            <tr>
+                <th>Date Submitted</th>
+                <th>Invoice No</th>
+                <th>Claim No</th>
+                <th>Claim Amount (MUR)</th>
+                <th>Payement Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paymt in payement %}
+            <tr>
+                <td>{{ paymt.date_submitted ? paymt.date_submitted|date('Y-M-d') : 'N/A' }}</td>
+                <td>{{ paymt.invoice_no ?? 'N/A' }}</td>
+                <td>{{ paymt.claim_number ?? 'N/A' }}</td>
+                <td>{{ paymt.claim_amount ?? 'N/A' }}</td>
+                <td>{{ paymt.date_payment ? paymt.date_payment|date('Y-M-d') : 'N/A' }}</td>
+                <td>{{ paymt.status_name ?? 'N/A' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align: center;">Aucun paiement trouvé</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>

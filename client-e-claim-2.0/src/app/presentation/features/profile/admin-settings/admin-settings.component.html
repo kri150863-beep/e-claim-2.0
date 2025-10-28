@@ -1,0 +1,63 @@
+<form [formGroup]="adminForm">
+    <div *ngFor="let field of fields" class="info-line">
+        <div class="flex justify-between items-center">
+            <div class="">
+                <div class="label font-semibold">{{ field.label }}</div>
+                <!-- Display Mode -->
+                <div *ngIf="!field.editing" class="value">
+                    <!-- Display text values -->
+                    <span *ngIf="field.type !== 'switch' && field.type !== 'multiselect'">
+                        {{ field.value || 'Not specified' }}
+                    </span>
+
+                    <span *ngIf="field.type === 'switch'">
+                        Do you wish to receive any kind on notifications?
+                    </span>
+
+                    <!-- Display multiselect values -->
+                    <div *ngIf="field.type === 'multiselect'" class="flex flex-wrap gap-1">
+                        {{ field.value.join(', ') }}
+                    </div>
+                </div>
+                <div *ngIf="field.editing" class="mt-2 w-80">
+                    <!-- Text Input -->
+                    <input *ngIf="field.type === 'text'" [type]="field.type" formControlName="{{ field.key }}"
+                        class="border rounded-md px-3 py-2 w-full focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        [class.border-red-300]="isFieldInvalid(field)" [class.border-gray-300]="!isFieldInvalid(field)">
+
+                    <!-- Multiselect Options -->
+                    <div *ngIf="field.type === 'multiselect'" class="flex flex-wrap gap-2 mt-2">
+                        <app-multi-select [options]="field.options || []" formControlName="{{ field.key }}"
+                            placeholder="Select preferred methods" class="w-full" />
+                    </div>
+                    <!-- Error Message -->
+                    <div *ngIf="getFieldError(field)" class="error-message">
+                        {{ getFieldError(field) }}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!field.editing" class="edit-link pe-6">
+                <!-- Edit Button (for editable fields) -->
+                <button *ngIf="field.type !== 'switch'" (click)="startEdit(field)"
+                    class="flex items-center edit-button text-sm cursor-pointer">
+                    <lucide-angular [img]="icons.edit" class="h-4 w-4 mr-1" />
+                    Edit
+                </button>
+            </div>
+            <!-- Switch Toggle -->
+            <label *ngIf="field.type === 'switch'" class="relative inline-flex items-center cursor-pointer pe-6">
+                <input type="checkbox" formControlName="{{ field.key }}" (change)="saveEdit(field)"
+                    class="sr-only peer">
+                <div
+                    class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-900 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all">
+                </div>
+            </label>
+            <div *ngIf="field.editing" class="flex pe-6">
+                <lucide-angular [img]="icons.close" class="h-4 w-4 text-red-500 cursor-pointer"
+                    (click)="cancelEdit(field)"></lucide-angular>
+                <lucide-angular [img]="icons.confirm" (click)="saveEdit(field)"
+                    class="h-4 w-4 text-green-500 ml-1 cursor-pointer"></lucide-angular>
+            </div>
+        </div>
+    </div>
+</form>

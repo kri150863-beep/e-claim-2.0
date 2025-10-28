@@ -1,0 +1,196 @@
+<div class="">
+    <div class="info-line" *ngIf="!isEditingPassword">
+        <div class="setting-header">
+            <div>
+                <div class="font-semibold">Password</div>
+                <div class="value">*********</div>
+            </div>
+            <button (click)="startEdit('password')" class="flex items-center edit-button text-sm cursor-pointer pe-6">
+                <lucide-angular [img]="icons.edit" class="h-4 w-4"></lucide-angular>
+                <span class="ml-1">Edit</span>
+            </button>
+        </div>
+    </div>
+
+    <form *ngIf="isEditingPassword" [formGroup]="securityForm">
+        <div class="info-line">
+            <div class="setting-header">
+                <div class="edit-form w-80">
+                    <div class="">
+                        <label for="currentPassword">Current Password</label>
+                        <div class="relative">
+                            <input [type]="currentPasswordVisible ? 'text' : 'password'" id="currentPassword"
+                                name="password" type="password" autocomplete="current-password" required
+                                formControlName="currentPassword"
+                                class="w-full border border-gray-300 rounded-md placeholder-gray-400 pl-8 pe-4 py-2 focus:outline-none"
+                                placeholder="Current Password" />
+                            <span
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
+                                <lucide-angular [img]="currentPasswordVisible ? icons.eye : icons.eyeOff"
+                                    class="h-4 w-4 edit-button"
+                                    (click)="toggleCurrentPasswordVisibility()"></lucide-angular>
+                            </span>
+                        </div>
+                        <div *ngIf="currentPassword?.invalid && (currentPassword?.dirty || currentPassword?.touched)"
+                            class="error-message">
+                            Current password is required
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="isEditingPassword" class="flex pe-6">
+                    <lucide-angular [img]="icons.close" class="h-4 w-4 text-red-500 cursor-pointer"
+                        (click)="cancelEdit('password')"></lucide-angular>
+                    <lucide-angular [img]="icons.confirm" (click)="saveEdit('password')"
+                        class="h-4 w-4 text-green-500 ml-1 cursor-pointer"></lucide-angular>
+                </div>
+            </div>
+        </div>
+        <div class="info-line">
+            <div class="setting-header">
+                <div class="edit-form w-80">
+                    <div class="">
+                        <label for="newPassword">New Password</label>
+                        <div class="relative">
+                            <div class="relative">
+                                <div class="relative">
+                                    <input [type]="newPasswordVisible ? 'text' : 'password'" id="newPassword"
+                                        name="password" type="password" autocomplete="current-password" required
+                                        formControlName="newPassword" (focus)="showRequirements = true"
+                                        (blur)="showRequirements = false"
+                                        class="w-full border border-gray-300 rounded-md placeholder-gray-400 pl-8 pe-4 py-2 focus:outline-none"
+                                        placeholder="New Password" />
+                                    <span
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
+                                        <lucide-angular [img]="newPasswordVisible ? icons.eye : icons.eyeOff"
+                                            class="h-4 w-4 edit-button"
+                                            (click)="toggleNewPasswordVisibility()"></lucide-angular>
+                                    </span>
+                                </div>
+                                <div *ngIf="newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)"
+                                    class="error-message">
+                                    <div *ngIf="newPassword?.errors?.['required']">Password is required</div>
+                                    <!-- <div *ngIf="newPassword?.errors?.['minlength']">
+                                        Password must be at least 8 characters
+                                    </div> -->
+                                    <div *ngIf="newPassword?.errors?.['passwordStrength']">
+                                        <span class="text-gray-700">Password strength: </span><span
+                                            class="text-red-600">Weak</span>
+                                    </div>
+                                </div>
+                                <div *ngIf="newPassword?.valid" class="success-message">
+                                    <span class="text-gray-700">Password strength: <span
+                                            class="text-green-600">Strong</span></span>
+                                </div>
+                            </div>
+                            <!-- Requirements Box -->
+                            <div *ngIf="showRequirements" class="absolute z-10 -mt-30 left-82 w-80">
+                                <div class="relative">
+                                    <div class="bg-white shadow-md rounded-md text-sm border border-gray-100">
+                                        <h4 class="font-bold mb-2 border-b-2 border-gray-100 px-3 pt-3 pb-1">Your
+                                            password
+                                            should:
+                                        </h4>
+                                        <ul class="space-y-2 px-3 pb-3">
+                                            <li class="flex items-center" [class.text-red-600]="!hasUppercase()"
+                                                [class.text-green-600]="hasUppercase()">
+                                                <span class="mr-2">
+                                                    <lucide-angular *ngIf="!hasUppercase()" [img]="icons.alert"
+                                                        class="h-4 w-4" />
+                                                    <lucide-angular *ngIf="hasUppercase()" [img]="icons.check"
+                                                        class="h-4 w-4" />
+                                                </span> Have at least 1 uppercase letter
+                                            </li>
+                                            <li class="flex items-center" [class.text-red-600]="!hasNumber()"
+                                                [class.text-green-600]="hasNumber()">
+                                                <span class="mr-2">
+                                                    <lucide-angular *ngIf="!hasNumber()" [img]="icons.alert"
+                                                        class="h-4 w-4" />
+                                                    <lucide-angular *ngIf="hasNumber()" [img]="icons.check"
+                                                        class="h-4 w-4" />
+                                                </span> Have at least 1 number
+                                            </li>
+                                            <li class="flex items-center" [class.text-red-600]="!hasSpecialChar()"
+                                                [class.text-green-600]="hasSpecialChar()">
+                                                <span class="mr-2">
+                                                    <lucide-angular *ngIf="!hasSpecialChar()" [img]="icons.alert"
+                                                        class="h-4 w-4" />
+                                                    <lucide-angular *ngIf="hasSpecialChar()" [img]="icons.check"
+                                                        class="h-4 w-4" />
+                                                </span> Have at least 1 special character
+                                            </li>
+                                            <li class="flex items-center" [class.text-red-600]="!hasMinLength()"
+                                                [class.text-green-600]="hasMinLength()">
+                                                <span class="mr-2">
+                                                    <lucide-angular *ngIf="!hasMinLength()" [img]="icons.alert"
+                                                        class="h-4 w-4" />
+                                                    <lucide-angular *ngIf="hasMinLength()" [img]="icons.check"
+                                                        class="h-4 w-4" />
+                                                </span> Have minimum 8 characters
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-line">
+            <div class="setting-header">
+                <div class="edit-form w-80">
+                    <div class="">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <div class="relative">
+                            <input [type]="confirmPasswordVisible ? 'text' : 'password'" id="confirmPassword"
+                                name="password" type="password" autocomplete="current-password" required
+                                formControlName="confirmPassword"
+                                class="w-full border border-gray-300 rounded-md placeholder-gray-400 pl-8 pe-4 py-2 focus:outline-none"
+                                placeholder="Confirm New Password" />
+                            <span
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
+                                <lucide-angular [img]="confirmPasswordVisible ? icons.eye : icons.eyeOff"
+                                    class="h-4 w-4 edit-button"
+                                    (click)="toggleConfirmPasswordVisibility()"></lucide-angular>
+                            </span>
+                        </div>
+                        <div *ngIf="securityForm.hasError('mismatch') && confirmPassword?.valid" class="error-message">
+                            Passwords don't match
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="info-line">
+        <div class="setting-header">
+            <div>
+                <div class="font-semibold">Backup Email</div>
+                <div class="value" *ngIf="!isEditingEmail">{{ maskedEmail }}</div>
+                <form *ngIf="isEditingEmail" [formGroup]="securityForm" class="mt-2 w-80">
+                    <div class="">
+                        <!-- <label for="backupEmail">Backup Email</label> -->
+                        <input type="email" id="backupEmail" formControlName="backupEmail">
+                        <div *ngIf="backupEmail?.invalid && (backupEmail?.dirty || backupEmail?.touched)"
+                            class="error-message">
+                            <div *ngIf="backupEmail?.errors?.['required']">Email is required</div>
+                            <div *ngIf="backupEmail?.errors?.['email']">Please enter a valid email</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <button *ngIf="!isEditingEmail" (click)="startEdit('email')"
+                class="flex items-center edit-button text-sm cursor-pointer pe-6">
+                <lucide-angular [img]="icons.edit" class="h-4 w-4"></lucide-angular>
+                <span class="ml-1">Edit</span>
+            </button>
+            <div *ngIf="isEditingEmail" class="flex pe-6">
+                <lucide-angular [img]="icons.close" class="h-4 w-4 text-red-500 cursor-pointer"
+                    (click)="cancelEdit('email')"></lucide-angular>
+                <lucide-angular [img]="icons.confirm" (click)="saveEdit('email')"
+                    class="h-4 w-4 text-green-500 ml-1 cursor-pointer"></lucide-angular>
+            </div>
+        </div>
+    </div>
+</div>

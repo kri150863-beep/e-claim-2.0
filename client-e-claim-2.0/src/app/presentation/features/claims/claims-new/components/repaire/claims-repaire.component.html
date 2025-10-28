@@ -1,0 +1,361 @@
+<main class="flex-1">
+  <div class="bg-white rounded-xl shadow">
+    <h2 class="text-lg font-semibold border-b border-gray-200 px-6 py-3">Spare parts</h2>
+
+    <form [formGroup]="repairForm" class="py-4">
+      <div formArrayName="spareParts" class="space-y-6">
+        <!-- Dynamic Spare Parts -->
+        <div *ngFor="let part of spareParts.controls; let i = index" [formGroupName]="i"
+          class="rounded-lg border border-gray-200 mx-6 mt-6">
+          <div class="flex justify-between items-center p-4 mb-2">
+            <!-- Display Mode -->
+            <div *ngIf="editingPartIndex !== i" class="flex justify-start items-center">
+              <input type="checkbox" formControlName="isSelected"
+                class="w-4 h-4 rounded text-primary mr-2 cursor-pointer" />
+              <h3 class="font-semibold text-gray-700 mr-4">
+                {{ part.get('name')?.value }} ({{ part.get('quantity')?.value }})
+              </h3>
+              <mat-icon class="text-primary mt-1 w-4 h-4 hover:text-blue-700 cursor-pointer" (click)="startEditing(i)">
+                border_color_outline
+              </mat-icon>
+            </div>
+            <!-- Edit Mode -->
+            <div *ngIf="editingPartIndex === i" class="flex justify-start items-center">
+              <input type="checkbox" formControlName="isSelected"
+                class="w-4 h-4 rounded text-primary mr-2 cursor-pointer" />
+              <!-- Édition du nom -->
+              <input [formControl]="$any(part.get('name'))" (keyup.enter)="saveEditing(i)" (blur)="saveEditing(i)"
+                class="border border-gray-300 rounded-lg p-1 w-32 text-sm mr-2">
+
+              <!-- Édition de la quantité -->
+              <input type="number" [formControl]="$any(part.get('quantity'))" (keyup.enter)="saveEditing(i)"
+                (blur)="saveEditing(i)" min="1" class="border border-gray-300 rounded-lg p-1 w-20 text-sm mr-2">
+
+              <button (click)="saveEditing(i)" class="text-green-600 hover:text-green-800">
+                <i class="fa fa-check-circle mr-1"></i>
+              </button>
+
+              <button (click)="cancelEditing()" class="text-red-600 hover:text-red-800">
+                <i class="fa fa-times-circle"></i>
+              </button>
+            </div>
+            <mat-icon class="text-primary mt-1 w-4 h-4 hover:text-red-700 cursor-pointer" (click)="removeSparePart(i)">
+              delete_outline
+            </mat-icon>
+          </div>
+
+          <!-- Tabs for Parts/Labour -->
+          <div class="mb-2 border-b border-gray-200 rounded-lg px-4">
+            <button type="button"
+              [class]="'mr-6 pb-3 cursor-pointer ' + (getActiveTab(i) === 0 ? 'text-primary border-b-2 border-blue-900' : 'text-gray-600')"
+              (click)="setActiveTab(0, i)">
+              Parts details
+            </button>
+            <button type="button"
+              [class]="'pb-3 cursor-pointer ' + (getActiveTab(i) === 1 ? 'text-primary border-b-2 border-blue-900' : 'text-gray-600')"
+              (click)="setActiveTab(1, i)">
+              <i *ngIf="part.get('labour_details')?.invalid" class="fa fa-times-circle text-red-500 mr-2"></i>
+              <span [ngClass]="{'text-red-500': part.get('labour_details')?.invalid}">Labour
+                details</span>
+            </button>
+          </div>
+          <div *ngIf="getActiveTab(i) === 0" class="overflow-x-auto p-4">
+            <table class="w-full text-left text-gray-700">
+              <thead>
+                <tr>
+                  <th class="w-auto"></th>
+                  <th class="w-1/6">Supplier</th>
+                  <th class="w-1/6">Quality</th>
+                  <th class="w-1/6">Cost (MUR)</th>
+                  <th class="w-1/6">Discount %</th>
+                  <th class="w-1/6">VAT %</th>
+                  <th class="w-1/6">Total (MUR)</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="part_details">
+                <tr *ngFor="let detail of getPartDetails(i)['controls']; let j = index" [formGroupName]="j">
+                  <td class="pr-4 pt-1 pb-4">
+                    <input type="radio" class="w-4 h-4 rounded" name="isSelected" (change)="onSelectPart(i, j)"
+                      [value]="detail.get('isSelected')?.value" />
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <select formControlName="supplier" class="w-full border border-gray-200 rounded-lg p-2"
+                      (change)="calculateLabourTotal(i, j)" [disabled]="j===0">
+                      <option value="">Select</option>
+                      <option value="Garage TGE">Garage TGE</option>
+                      <option value="Garage Spare Ltd">Garage Spare Ltd</option>
+                      <option value="AutoParts Inc">AutoParts Inc</option>
+                      <option value="Premium Parts Co">Premium Parts Co</option>
+                      <option value="OEM Supplies">OEM Supplies</option>
+                      <option value="Garage tieu">Garage tieu</option>
+                      <option value="Economy Parts">Economy Parts</option>
+                    </select>
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <select formControlName="quality" class="w-full border border-gray-200 rounded-lg p-2"
+                      (change)="calculateLabourTotal(i, j)">
+                      <option value="">Select</option>
+                      <option value="Economy">Economy</option>
+                      <option value="Standard">Standard</option>
+                      <option value="Premium">Premium</option>
+                      <option value="OEM">OEM</option>
+                    </select>
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <input type="number" formControlName="cost_part" (onchange)="calculateLabourTotal(i, j)"
+                      class="w-full border border-gray-200 rounded-lg p-2">
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <input type="number" formControlName="discount_part" (onchange)="calculateLabourTotal(i, j)"
+                      class="w-full border border-gray-200 rounded-lg p-2">
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <select formControlName="vat_part" class="w-full border border-gray-200 rounded-lg p-2"
+                      (onchange)="calculateLabourTotal(i, j)">
+                      <option value="">Select</option>
+                      <option value="0">0</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15" selected>15</option>
+                      <option value="20">20</option>
+                    </select>
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <input class="w-full border border-gray-200 rounded-lg p-2 bg-gray-100"
+                      [value]="detail.get('part_total')?.value" disabled>
+                  </td>
+                  <!-- <td class="pr-4 pt-1 pb-4">
+                    <button type="button" (click)="removePartDetail(i, j)" class="text-red-500" *ngIf="j > 0">
+                      <mat-icon>remove_circle_outline</mat-icon>
+                    </button>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+            <!-- <button type="button" (click)="addPartDetail(i)" class="mt-2 text-primary cursor-pointer">+ Add Part
+              Detail</button> -->
+          </div>
+          <div *ngIf="getActiveTab(i) === 1" class="overflow-x-auto p-4">
+            <table class="w-full text-left text-gray-700">
+              <thead>
+                <tr>
+                  <th class=""></th>
+                  <th class="w-1/6">Activity</th>
+                  <th class="w-1/6">Number of hours</th>
+                  <th class="w-1/6">Hourly Cost (MUR)</th>
+                  <th class="w-1/6">Discount %</th>
+                  <th class="w-1/6">VAT %</th>
+                  <th class="w-1/6">Total (MUR)</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody formArrayName="labour_details">
+                <tr *ngFor="let labour of getLabourDetails(i)['controls']; let k = index" [formGroupName]="k">
+                  <td class="pr-4 pt-1 pb-4">
+                    {{ labour.get('eor_or_surveyor')?.value }}
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <select formControlName="activity" (change)="calculateLabourTotal(i, k)"
+                      class="w-full border border-gray-200 rounded-lg p-2"
+                      [ngClass]="{'border-red-500': isLabourFieldInvalid('activity', i, k)}">
+                      <option value="">Select</option>
+                      <option value="Installation">Installation</option>
+                      <option value="Repair">Repair</option>
+                      <option value="Maintenance">Maintenance</option>
+                      <option value="Inspection">Inspection</option>
+                      <option value="Diagnostics">Diagnostics</option>
+                      <option value="Painting">Painting</option>
+                      <option value="Assembly">Assembly</option>
+                      <option value="Testing">Testing</option>
+                      <option value="Calibration">Calibration</option>
+                      <option value="Cleaning">Cleaning</option>
+                      <option value="Remplacement pare-chocs avant">Remplacement pare-chocs avant</option>
+                      <option value="Application peinture métallisée">Application peinture métallisée</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <input type="number" formControlName="number_of_hours"
+                      class="w-full border border-gray-200 rounded-lg p-2"
+                      [ngClass]="{'border-red-500': isLabourFieldInvalid('number_of_hours', i, k)}"
+                      (change)="calculateLabourTotal(i, k)">
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <input type="number" formControlName="hourly_cost_labour"
+                      class="w-full border border-gray-200 rounded-lg p-2"
+                      [ngClass]="{'border-red-500': isLabourFieldInvalid('hourly_cost_labour', i, k)}"
+                      (change)="calculateLabourTotal(i, k)">
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <input type="number" formControlName="discount_labour"
+                      class="w-full border border-gray-200 rounded-lg p-2"
+                      [ngClass]="{'border-red-500': isLabourFieldInvalid('discount_labour', i, k)}"
+                      (change)="calculateLabourTotal(i, k)">
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <select formControlName="vat_labour" class="w-full border border-gray-200 rounded-lg p-2"
+                      [ngClass]="{'border-red-500': isLabourFieldInvalid('vat_labour', i, k)}"
+                      (change)="calculateLabourTotal(i, k)" class="w-full border border-gray-200 rounded-lg p-2">
+                      <option value="">Select</option>
+                      <option value="0">0</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15" selected>15</option>
+                      <option value="20">20</option>
+                    </select>
+                  </td>
+                  <td class="pr-4 pt-1 pb-4">
+                    <input class="w-full border border-gray-200 rounded-lg p-2 bg-gray-100"
+                      [value]="labour.get('labour_total')?.value" disabled>
+                  </td>
+                  <!-- <td>
+                    <button type="button" (click)="removeLabourDetail(i, k)" class="text-red-500">Remove</button>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+            <!-- <button type="button" (click)="addLabourDetail(i)" class="mt-2 text-blue-600">+ Add Labour Detail</button> -->
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Add spare part button -->
+      <div class="flex justify-center w-full mt-6">
+        <button type="button" (click)="addSparePart()"
+          class="flex items-center text-center text-white bg-primary hover:bg-blue-700 px-4 py-2 rounded-lg text-sm cursor-pointer">
+          <mat-icon class="mr-2">add_circle_outline</mat-icon>
+          Add spare part
+        </button>
+      </div>
+
+      <!-- Additional Labour Section -->
+      <div class="mx-6 pb-6 mt-8 border border-gray-200 rounded-lg p-4">
+        <h2 class="text-lg font-semibold pb-3 mb-4">Additional labour details</h2>
+
+        <div formArrayName="additional_labour_details" class="overflow-x-auto">
+          <table class="w-full text-left text-gray-700 border-collapse">
+            <thead>
+              <tr>
+                <th class="p-3"></th>
+                <th class="p-3 w-1/7">Painting cost</th>
+                <th class="p-3 w-1/7">Painting materials</th>
+                <th class="p-3 w-1/7">Sundries</th>
+                <th class="p-3 w-1/7">N° of repair days</th>
+                <th class="p-3 w-1/7">Discount</th>
+                <th class="p-3 w-1/7">VAT %</th>
+                <th class="p-3 w-1/7">Total (MUR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let labour of additionalLabourDetails.controls; let i = index" [formGroupName]="i">
+                <td class="p-3">
+                  {{ labour.get('eor_or_surveyor')?.value }}
+                </td>
+                <td class="p-3">
+                  <input type="number" formControlName="painting_cost" (input)="calculateAdditionalLabourTotal(i)"
+                    class="w-full border border-gray-200 rounded-lg p-2">
+                </td>
+                <td class="p-3">
+                  <input type="number" formControlName="painting_materiels" (input)="calculateAdditionalLabourTotal(i)"
+                    class="w-full border border-gray-200 rounded-lg p-2">
+                </td>
+                <td class="p-3">
+                  <input type="number" formControlName="sundries" (input)="calculateAdditionalLabourTotal(i)"
+                    class="w-full border border-gray-200 rounded-lg p-2">
+                </td>
+                <td class="p-3">
+                  <input type="number" formControlName="num_of_repaire_days" min="1"
+                    class="w-full border border-gray-200 rounded-lg p-2">
+                </td>
+                <td class="p-3">
+                  <input type="number" formControlName="discount_add_labour" (input)="calculateAdditionalLabourTotal(i)"
+                    min="0" class="w-full border border-gray-200 rounded-lg p-2">
+                </td>
+                <td class="p-3">
+                  <select formControlName="vat" (change)="calculateAdditionalLabourTotal(i)"
+                    class="w-full border border-gray-200 rounded-lg p-2">
+                    <option value="">Select</option>
+                    <option value="0">0</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15" selected>15</option>
+                    <option value="20">20</option>
+                  </select>
+                </td>
+                <td class="p-3">
+                  <input class="w-full border border-gray-200 rounded-lg p-2 bg-gray-100"
+                    [value]="labour.get('add_labour_total')?.value | currency:'MUR':'symbol':'1.2-2'" disabled>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Remarks Section -->
+      <div class="mx-6 pb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Remarks</label>
+        <textarea formControlName="remarks" class="w-full border border-gray-200 rounded-lg p-2 h-20"
+          placeholder="Add any additional remarks here..."></textarea>
+      </div>
+
+      <!-- Totals Summary -->
+      <div class="mx-6 pb-6 grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 gap-6 mt-6 text-sm">
+        <div class="border border-gray-200 rounded-lg">
+          <table class="border-collapse w-full">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border-b border-gray-200 p-4 text-left" colspan="2">Parts Summary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-gray-50">
+                <td class="bg-gray-100 border-b border-gray-200 p-4">Total Parts Cost</td>
+                <td class="border-l border-b border-gray-200 p-4">
+                  {{ getTotalPartsCost() | currency:'MUR':'symbol':'1.2-2' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg">
+          <table class="border-collapse w-full">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border-b border-gray-200 p-4 text-left" colspan="2">Labour Summary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-gray-50">
+                <td class="bg-gray-100 border-b border-gray-200 p-4">Total Labour Cost</td>
+                <td class="border-l border-b border-gray-200 p-4">
+                  {{ getTotalLabourCost() | currency:'MUR':'symbol':'1.2-2' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg">
+          <table class="border-collapse w-full">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border-b border-gray-200 p-4 text-left" colspan="2">Grand Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-gray-50">
+                <td class="bg-gray-100 border-b border-gray-200 p-4">Total Amount</td>
+                <td class="border-l border-b border-gray-200 p-4 font-semibold">
+                  {{ getGrandTotal() | currency:'MUR':'symbol':'1.2-2' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>

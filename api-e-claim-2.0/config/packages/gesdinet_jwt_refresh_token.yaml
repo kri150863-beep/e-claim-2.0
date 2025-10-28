@@ -1,0 +1,9 @@
+gesdinet_jwt_refresh_token:
+    ttl: 2592000
+    ttl_update: true
+    firewall: api
+    user_identity_field: emailAddress
+    single_use: true
+    token_parameter_name: refresh_tokens
+    entity_manager: doctrine.orm.default_entity_manager
+    refresh_token_class: App\Entity\Surveyor\RefreshTokens

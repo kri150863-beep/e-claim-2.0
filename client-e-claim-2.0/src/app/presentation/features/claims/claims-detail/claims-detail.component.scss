@@ -1,0 +1,33 @@
+@mixin dot-color($color: #000000) {
+    color: $color;
+}
+
+.status-dot {
+    &.info {
+        @include dot-color(#1fa2fa)
+    }
+
+    &.primary {
+        @include dot-color(#061786)
+    }
+
+    &.success {
+        @include dot-color(#19c533)
+    }
+
+    &.warning {
+        @include dot-color(#e9a81c)
+    }
+
+    &.danger {
+        @include dot-color(#dc3545)
+    }
+
+    &.yellow {
+        @include dot-color(#FDDA0D)
+    }
+
+    &.error {
+        @include dot-color(#970c0c)
+    }
+}

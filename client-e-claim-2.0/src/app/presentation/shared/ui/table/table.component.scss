@@ -1,0 +1,228 @@
+table {
+    .sort-icons {
+        flex-direction: column;
+
+        .mat-icon {
+            line-height: 1;
+            font-size: 22px;
+            height: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    @mixin dot-color($color: #000000) {
+        background-color: $color;
+    }
+
+    p {
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+
+        &.info {
+            @include dot-color(#1fa2fa)
+        }
+
+        &.primary {
+            @include dot-color(#061786)
+        }
+
+        &.success {
+            @include dot-color(#19c533)
+        }
+
+        &.warning {
+            @include dot-color(#e9a81c)
+        }
+
+        &.danger {
+            @include dot-color(#dc3545)
+        }
+
+        &.yellow {
+            @include dot-color(#FDDA0D)
+        }
+
+        &.error {
+            @include dot-color(#970c0c)
+        }
+    }
+
+    thead {
+        background-color: var(--tp-bg-gray-1);
+
+        th {
+            border-bottom: 1px solid var(--tp-gray-1);
+            position: relative;
+        }
+    }
+
+    tr {
+        border-bottom: 1px solid var(--tp-gray-1);
+
+        td,
+        th {
+            padding: 17px;
+        }
+    }
+
+    tbody {
+        tr {
+            background-color: #ffffff;
+
+            &.clickable {
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #f1f1f1;
+                }
+            }
+        }
+    }
+}
+
+.status-filter {
+  &-option {
+    transition: all 0.2s ease;
+    &:hover {
+      transform: translateY(-1px);
+    }
+    
+    &.active {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  .clear-btn {
+    transition: color 0.2s ease;
+    &:hover {
+      color: var(--tp-text-error) !important;
+    }
+  }
+}
+
+.icon-button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    transition: 0.3s;
+
+    &:hover {
+        background-color: #00000017;
+    }
+
+    mat-icon {
+        height: 18px;
+        font-size: 18px;
+        color: #00000075;
+    }
+
+    &.button_download {
+        td & {
+            z-index: 10;
+        }
+
+        padding: 5px;
+        color: var(--tp-bg-primary);
+
+        &:hover {
+            background-color: #0a22c034;
+        }
+    }
+
+    &--ellipsis {
+        color: var(--tp-text-black);
+        padding: 5px;
+
+        &:hover {
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.1);
+
+            .icon-button__icon {
+                color: var(--tp-bg-primary);
+            }
+        }
+
+        td & {
+            // position: relative;
+            z-index: 10;
+        }
+    }
+}
+
+
+.pagination__container {
+    mat-select {
+        width: fit-content;
+        border: 1px solid #888888;
+        border-radius: 5px;
+
+        ::ng-deep .mat-mdc-select-arrow {
+            margin: 0 10px;
+        }
+
+        ::ng-deep .mat-mdc-select-value {
+            padding: 5px 12px;
+        }
+    }
+
+    pagination-controls {
+        ::ng-deep .ngx-pagination {
+            margin-bottom: 0;
+
+            .pagination-previous,
+            .pagination-next {
+
+                ::before,
+                ::after,
+                &::before,
+                &::after {
+                    display: none;
+                }
+            }
+
+            li {
+                border-radius: 6px;
+
+                &.current {
+                    background: none;
+                    color: var(--tp-bg-primary);
+
+                    border: 1px solid var(--tp-bg-primary);
+                }
+            }
+        }
+    }
+
+}
+
+.mat-mdc-option {
+    transition: 0.2s;
+    background-color: white !important;
+
+    ::ng-deep .mdc-list-item__primary-text {
+        white-space: nowrap;
+    }
+
+    ::ng-deep .mat-pseudo-checkbox {
+        display: none;
+    }
+
+    &.mdc-list-item--selected {
+        background-color: var(--tp-bg-primary) !important;
+        color: white;
+    }
+
+    &.mdc-list-item:hover:not(.mdc-list-item--selected) {
+        background-color: #dddddd !important;
+    }
+}

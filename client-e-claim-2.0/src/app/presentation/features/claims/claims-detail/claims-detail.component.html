@@ -1,0 +1,82 @@
+<main class="flex-1 overflow-y-auto">
+  <div class="mb-6 flex-1">
+    <div class="mb-4">
+      <span class="text-gray-500">Overview</span> /
+      <span class="font-semibold">{{claimId}}</span>
+    </div>
+  </div>
+
+  <!-- Back button -->
+  <app-button variant="outlined-primary" (click)="onBackToClaimList()">
+    <mat-icon start-icon>arrow_back</mat-icon>
+    Back
+  </app-button>
+
+  <!-- Claim Title -->
+  <div class="flex items-center my-6">
+    <h2 class="text-xl font-semibold mr-2">Claim N°: {{claimId}}</h2>
+    <span *ngIf="claim?.vehicle_information?.status"
+      [class]="`status-dot ${getKeyByValue(claim.vehicle_information.status)} text-sm font-medium`">●
+      {{claim.vehicle_information.status}}</span>
+  </div>
+
+  <div class="container bg-white">
+    <!-- Tabs -->
+    <div class="flex justify-between">
+      <div class="flex gap-1">
+        <button (click)="onToggle(ViewType.INFORMATION)" [class.border-blue-600]="activeView === ViewType.INFORMATION"
+          [class.text-primary]="activeView === ViewType.INFORMATION"
+          [class.text-gray-600]="activeView !== ViewType.INFORMATION"
+          [ngClass]="{
+            'text-primary bg-white border-b-0': activeView === ViewType.INFORMATION,
+            'text-gray-600 bg-secondary': activeView !== ViewType.INFORMATION
+          }"
+          class="px-4 py-2 font-medium rounded-t-md border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+          Information
+        </button>
+
+        <button (click)="onToggle(ViewType.ESTIMATION)" [class.border-blue-600]="activeView === ViewType.ESTIMATION"
+          [ngClass]="{
+            'text-primary bg-white border-b-0': activeView === ViewType.ESTIMATION,
+            'text-gray-600 bg-secondary': activeView !== ViewType.ESTIMATION
+          }"
+          class="px-4 py-2 text-nowrap font-medium rounded-t-md border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+          Repair estimate
+        </button>
+
+        <button (click)="onToggle(ViewType.DOCUMENT)" [class.border-blue-600]="activeView === ViewType.DOCUMENT"
+          [ngClass]="{
+            'text-primary bg-white border-b-0': activeView === ViewType.DOCUMENT,
+            'text-gray-600 bg-secondary': activeView !== ViewType.DOCUMENT
+          }"
+          class="px-4 py-2 font-medium bg-secondary rounded-t-md border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+          Document
+        </button>
+      </div>
+      <div class="w-full border-b border-gray-200"></div>
+    </div>
+
+    <div class="px-4 py-6">
+      <!-- Dynamic Components -->
+      <app-claims-info *ngIf="activeView === ViewType.INFORMATION" [generalInfo]="claim?.vehicle_information"
+        [surveyInfo]="claim?.survey_information" />
+
+      <app-claims-estimation *ngIf="activeView === ViewType.ESTIMATION" [labourDetails]="claim?.labour_details"
+        [partDetails]="claim?.part_details" [grandTotals]="claim?.grand_totals" />
+
+      <app-claims-document *ngIf="activeView === ViewType.DOCUMENT" [documents]="claim?.documents" />
+    </div>
+  </div>
+
+  <!-- Footer Buttons -->
+  <div class="flex justify-end space-x-4 mt-6">
+    <!-- <button (click)="onBackToClaimList()"
+      class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">
+      Exit
+    </button> -->
+    <button class="flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">
+      <mat-icon start-icon class="mr-2">save_alt</mat-icon>
+      Download claim
+    </button>
+  </div>
+</main>

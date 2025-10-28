@@ -1,0 +1,33 @@
+<form [formGroup]="accountForm">
+    <div class="info-line" *ngFor="let item of fields">
+        <div [class.flex]="isWebsiteField(item.key)" [class.justify-between]="isWebsiteField(item.key)"
+            [class.items-center]="isWebsiteField(item.key)">
+            <div>
+                <div class="label font-semibold">{{ item.label }}</div>
+                <!-- Display mode -->
+                <div class="value" *ngIf="!item.editable">{{ item.value }}</div>
+                <!-- Edit mode (only for website field) -->
+                <div *ngIf="item?.editable && isWebsiteField(item.key)" class="edit-mode mt-2 w-80">
+                    <input type="url" [value]="item.value" formControlName="website"
+                        [(ngModel)]="accountForm.value.website" class="border border-gray-300 rounded px-3 py-2 w-full">
+                    <div *ngIf="getFieldError(item)" class="error-message">
+                        {{ getFieldError(item) }}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isWebsiteField(item.key)" class="edit-link pe-6">
+                <button *ngIf="!isEditable(item) && !item.editable"
+                    class="flex items-center edit-button text-sm cursor-pointer" (click)="startWebsiteEdit(item)">
+                    <lucide-angular [img]="icons.edit" class="h-4 w-4"></lucide-angular>
+                    <span class="ml-1">Edit</span>
+                </button>
+                <div *ngIf="item.editable" class="flex">
+                    <lucide-angular [img]="icons.close" class="h-4 w-4 text-red-500 cursor-pointer"
+                        (click)="cancelWebsiteEdit(item)"></lucide-angular>
+                    <lucide-angular [img]="icons.check" (click)="saveWebsiteEdit(item)"
+                        class="h-4 w-4 text-green-500 ml-1 cursor-pointer"></lucide-angular>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,35 @@
+<!-- General Information -->
+<div class="mb-8">
+  <h3 class="text-lg font-semibold mb-4">General information</h3>
+  <div class="grid grid-cols-3 gap-4 text-sm">
+    <div><span class="text-gray-500">Date received</span><br>{{generalInfo?.received_date}}</div>
+    <div><span class="text-gray-500">Ageing</span><br>{{generalInfo?.ageing}}H</div>
+    <div><span class="text-gray-500">Name</span><br><strong>{{generalInfo?.name}}</strong></div>
+    <div><span class="text-gray-500">Mobile number</span><br>{{generalInfo?.mobile_number}}</div>
+    <div><span class="text-gray-500">Place of survey</span><br>{{generalInfo?.place_of_survey}}</div>
+    <div><span class="text-gray-500">Registration number</span><br>{{generalInfo?.registration_number}}</div>
+    <div><span class="text-gray-500">Chasis number</span><br>{{generalInfo?.chasisi_no}}</div>
+    <div><span class="text-gray-500">Point of impact</span><br>{{generalInfo?.point_of_impact}}</div>
+    <div><span class="text-gray-500">Condition of
+        vehicle</span><br><strong>{{generalInfo?.condition_of_vehicle}}</strong></div>
+    <div><span class="text-gray-500">Make</span><br>{{generalInfo?.make}}</div>
+    <div><span class="text-gray-500">Model</span><br><strong>{{generalInfo?.model}}</strong></div>
+    <div><span class="text-gray-500">Is the vehicle total
+        loss?</span><br><strong>{{generalInfo?.is_the_vehicle_total_loss ? "Yes" : "No"}}</strong></div>
+  </div>
+</div>
+
+<!-- Survey Information -->
+<div class="mb-8">
+  <h3 class="text-lg font-semibold mb-4">Survey information</h3>
+  <div class="grid grid-cols-3 gap-4 text-sm">
+    <div><span class="text-gray-500">Invoice number</span><br><strong>{{surveyInfo?.invoice_number}}</strong></div>
+    <div><span class="text-gray-500">Survey type</span><br><strong>{{surveyInfo?.survey_type}}</strong></div>
+    <div><span class="text-gray-500">EOR value</span><br><strong>Rs {{surveyInfo?.eor_value}}</strong></div>
+    <div><span class="text-gray-500">Date & time of survey</span><br>{{surveyInfo?.date_of_survey}} - {{surveyInfo?.time_of_survey}}</div>
+    <div><span class="text-gray-500">Pre-Accident value</span><br><strong>Rs {{surveyInfo?.pre_accident_valeur}}</strong></div>
+    <div><span class="text-gray-500">Wreck value</span><br><strong>Rs {{surveyInfo?.wrech_value}}</strong></div>
+    <div><span class="text-gray-500">Excess applicable</span><br><strong>Rs {{surveyInfo?.excess_applicable}}</strong></div>
+    <div><span class="text-gray-500">Showroom price</span><br><strong>Rs {{surveyInfo?.showroom_price}}</strong></div>
+  </div>
+</div>

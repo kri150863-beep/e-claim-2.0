@@ -1,0 +1,36 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Frontend gitignore file
+
+# Compiled output
+/client-e-claim-2.0/dist
+/client-e-claim-2.0/tmp
+/client-e-claim-2.0/out-tsc
+/client-e-claim-2.0/bazel-out
+
+# Node
+/client-e-claim-2.0/node_modules
+/client-e-claim-2.0npm-debug.log
+/client-e-claim-2.0yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Backend gitignore file
+###> symfony/framework-bundle ###
+/api-e-claim-2.0/.env.local.php
+/api-e-claim-2.0/.env.*.local
+/api-e-claim-2.0/config/secrets/prod/prod.decrypt.private.php
+/api-e-claim-2.0/public/bundles/
+/api-e-claim-2.0/var/
+/api-e-claim-2.0/vendor/
+/api-e-claim-2.0/.env
+/api-e-claim-2.0/.env.dev
+/api-e-claim-2.0/phpunit.xml
+/api-e-claim-2.0/config/secrets/

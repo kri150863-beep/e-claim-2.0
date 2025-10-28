@@ -1,0 +1,37 @@
+<div class="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 gap-4">
+    <div class="col-span-1 upload-container" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        <input type="file" #fileInput (change)="onFileSelected($event)" [multiple]="true"
+            accept=".pdf,.jpg,.jpeg,.png,.svg" hidden>
+
+        <div class="upload-area" [class.drag-over]="isDragOver" (click)="fileInput.click()">
+            <div class="upload-icon">
+                <mat-icon>move_to_inbox</mat-icon>
+            </div>
+            <div class="upload-text">
+                <p class="main-text">Click or drag file to this area to upload</p>
+                <p class="sub-text">Support for a single or bulk upload.</p>
+                <p class="sub-text">Support pdf, jpg, png and svg (50MB max)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-1 xl:col-span-2 file-list" *ngIf="uploadedFiles.length > 0">
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-y-2 gap-x-6">
+            <div class="col-span-1" *ngFor="let file of uploadedFiles">
+                <div class="flex justify-between items-center file-item">
+                    <div class="flex">
+                        <mat-icon class="file-prefix">attachment</mat-icon>
+                        <span class="file-name">{{ file.name }}</span>
+                    </div>
+                    <button
+                        class="remove-btn"
+                        (click)="removeFile(file)">
+                        <mat-icon start class="text-sm">
+                            delete_outline
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

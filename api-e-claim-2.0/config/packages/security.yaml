@@ -1,0 +1,59 @@
+security:
+    password_hashers:
+        App\Entity\ClaimUser\AccountInformations:
+            algorithm: auto
+            cost: 12
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\ClaimUser\AccountInformations
+                property: emailAddress  # Doit matcher le nom exact de la propriété
+                manager_name: claim_user_db
+
+    # le firewall gère la sécurisation    
+    firewalls: 
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+            
+        login:
+            pattern: ^/api/auth/login 
+            stateless: true
+            json_login:
+                check_path: /api/auth/login
+                username_path: email  # Doit matcher le nom du champ dans le JSON
+                password_path: password
+                # success_handler: lexik_jwt_authentication.handler.authentication_success
+                success_handler: App\Security\CustomAuthenticationSuccessHandler
+                # failure_handler: lexik_jwt_authentication.handler.authentication_failure
+                failure_handler: App\Security\CustomAuthenticationFailureHandler
+            provider: app_user_provider
+
+
+        public_auth:
+            pattern: ^/api/auth
+            stateless: true
+            security: false 
+
+        
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            entry_point: jwt
+            jwt: ~
+            refresh_jwt:
+                check_path: /api/token/refresh
+            custom_authenticators:
+                - App\Security\JWTTokenAuthenticator
+
+    # l'access_control détermine les permissions d'accès aus URLs
+    access_control:
+        - { path: '^/mercure/', roles: PUBLIC_ACCESS }
+        # Accès libre à toutes les routes d'authentification (login, register, forgot-password, etc.)
+        - { path: ^/api/auth, roles: PUBLIC_ACCESS }
+        # Accès libre au refresh token
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+        # Le reste de l'API requiert un token JWT valide
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

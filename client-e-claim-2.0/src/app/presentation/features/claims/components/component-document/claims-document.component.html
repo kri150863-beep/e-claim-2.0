@@ -1,0 +1,31 @@
+<div class="mb-8">
+    <h3 class="text-lg font-semibold">Document list</h3>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="min-w-full text-sm border border-gray-200 rounded-lg">
+        <thead class="bg-gray-100 text-left text-xs uppercase tracking-wide">
+            <tr>
+                <th class="xl:w-4/5 lg:w-4/5 px-4 py-2">
+                    <div class="border-r border-gray-200 pr-4 flex justify-between">
+                        <span>Attachments</span>
+                        <button class="icon-button cursor-pointer">
+                            <mat-icon>filter_alt</mat-icon>
+                        </button>
+                    </div>
+                </th>
+                <th class="px-4 py-2"><div>Actions</div></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+            <tr *ngFor="let row of documents" class="hover:bg-gray-50">
+                <td class="px-4 py-2">{{row?.attachments}}</td>
+
+                <td class="text-blue-600 px-4 py-2">
+                    <button class="cursor-pointer me-4">View</button>
+                    <button class="cursor-pointer">Download</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

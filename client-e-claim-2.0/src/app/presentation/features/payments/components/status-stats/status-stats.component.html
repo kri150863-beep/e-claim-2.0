@@ -1,0 +1,12 @@
+<div [class]="`grid grid-cols-${stats().length} gap-4 mb-4`">
+    <status-card
+        *ngFor="let stat of stats()"
+        [label]="stat.name"
+        [count]="stat.count"
+        [amount]="getAmount(stat.amount)"
+        [currency]="currency"
+        [isSelected]="currentStatus() == stat.name"
+        (click)="change.emit(stat.name)"
+    >
+    </status-card>
+</div>

@@ -1,0 +1,71 @@
+main {
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .payment__claimId-container {
+            display: flex;
+            gap: 7px
+        }
+        $border-value: 1px solid lightgray;
+        @mixin dot-color($color: #000000) {
+            background-color: $color;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            &.new { @include dot-color(#1fa2fa) }
+            &.info { @include dot-color(#061786) }
+            &.success { @include dot-color(#19c533) }
+            &.warning { @include dot-color(#e9a81c) } 
+            &.error { @include dot-color(#970c0c) } 
+        }
+        .details-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background-color: white;
+            padding: 20px 30px 65px 30px;
+            margin-top: 5px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px 0px #dadada;
+            .field-container {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                input:disabled {
+                    background-color: #d3d3d380;
+                }
+            }
+            .data-table {
+                width: fit-content;
+                border-top: $border-value;
+                border-left: $border-value;
+                border-collapse: separate;
+                border-spacing: 0;
+                border-radius: 7px;
+                overflow: hidden;
+                tr td {
+                    padding: 12px 25px;
+                    width: 175px;
+                    border-right: $border-value;
+                    border-bottom: $border-value;
+                }
+                &.surveyor tr td {
+                    &:first-child {
+                        background-color: var(--tp-bg-gray-1);
+                    }
+                    &:last-child {
+                        font-weight: bold;
+                    }
+                }
+                &.garage tr {
+                    &:first-child td, &:last-child td {
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

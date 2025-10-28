@@ -1,0 +1,44 @@
+form {
+    [mat-dialog-title] {
+        font-weight: bold;
+    }
+    mat-dialog-content {
+        display: flex;
+        flex-direction: column;
+        gap: 17px;
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+    }
+    mat-dialog-actions {
+        gap: 15px;
+    }
+}
+
+::ng-deep .mat-datepicker-content-container {
+    background-color: white;
+}
+
+::ng-deep .mat-calendar-body-disabled {
+    color: lightgray;
+}
+
+.mat-mdc-option {
+    transition: 0.2s;
+    background-color: white!important;
+    ::ng-deep .mdc-list-item__primary-text {
+        white-space: nowrap;
+    }
+    ::ng-deep .mat-pseudo-checkbox {
+        display: none;  
+    }
+    &.mdc-list-item--selected {
+        background-color: var(--tp-bg-primary)!important;
+        color: white;
+    }
+    &.mdc-list-item:hover:not(.mdc-list-item--selected){
+        background-color: #dddddd!important;
+    }
+}

@@ -1,0 +1,142 @@
+<div class="flex flex-col gap-4">
+    <table class="min-w-full table-auto">
+        <thead class="text-black-700">
+            <tr>
+                <th *ngFor="let header of headers" class="px-4 py-4 text-left">
+                    <div class="flex items-center justify-between">
+                        {{ header.label }}
+                        <span *ngIf="header.sortable">
+                            <button class="icon-button sort-icons" (click)="sort.emit(header.id)">
+                                <mat-icon>arrow_drop_up</mat-icon>
+                                <mat-icon>arrow_drop_down</mat-icon>
+                            </button>
+                        </span>
+
+                        <div *ngIf="header.searchable" #searchInput>
+                            <button class="icon-button" (click)="toggleHeaderSearch(header.id)">
+                                <mat-icon>search</mat-icon>
+                            </button>
+
+                            <!-- Search input that appears when icon is clicked -->
+                            <div *ngIf="activeSearchHeader === header.id"
+                                class="absolute left-0 top-full mt-1 z-10 bg-white shadow-lg rounded-md border border-gray-200 min-w-[220px]">
+                                <div class="relative p-1.5 font-normal">
+                                    <input [(ngModel)]="headerSearchTerms[header.id]"
+                                        (ngModelChange)="onHeaderSearch(header.id, headerSearchTerms[header.id])"
+                                        (keydown.enter)="onSearchEnter(header.id, headerSearchTerms[header.id])"
+                                        placeholder="Search {{header.label}}..."
+                                        class="w-full border border-gray-300 rounded-md py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-0 transition-all">
+                                    <button *ngIf="headerSearchTerms[header.id]" (click)="clearHeaderSearch(header.id)"
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                                        <mat-icon class="!w-4 !h-4 !text-base">close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Status filter -->
+                        <div *ngIf="header.filterable" #statusFilter>
+                            <button class="icon-button"
+                                (click)="toggleStatusFilter()"><mat-icon>filter_alt</mat-icon></button>
+
+                            <div *ngIf="statusFilterToggled && statusOptions?.length"
+                                class="absolute left-0 top-full mt-1 p-4 z-15 bg-white shadow-lg rounded-md border border-gray-200 min-w-[220px]">
+                                <h3 class="text-sm font-medium text-gray-700 mb-3">Filter by Status</h3>
+                                <div class="font-normal space-y-3">
+                                    <div *ngFor="let status of statusOptions" class="flex items-center">
+                                        <input type="checkbox" [id]="'status-'+status"
+                                            [checked]="selectedStatuses.includes(status)"
+                                            (change)="onStatusFilterChange(status)"
+                                            class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2 cursor-pointer">
+                                        <label [for]="'status-'+status"
+                                            class="text-sm text-gray-700 cursor-pointer">{{status}}</label>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end space-x-2 mt-3">
+                                    <button type="button" (click)="clearStatusFilters()"
+                                        class="border border-gray-300 text-sm font-normal rounded py-1 px-2 hover:bg-gray-200 flex items-center gap-1 cursor-pointer">
+                                        Cancel
+                                    </button>
+                                    <button type="button" (click)="applyStatusFilterChange()"
+                                        class="bg-[#1C398E] text-white text-sm font-normal rounded py-1 px-2 hover:bg-[#162f7a] flex items-center gap-1 cursor-pointer">
+                                        Ok
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-700">
+            <!-- Table rows -->
+            <ng-container *ngIf="rows.length; else noData">
+                <tr *ngFor="let row of (paginationOptions ? (rows | paginate: pOptions) : rows); let i = index"
+                    [class]="(clickableRow) ? 'clickable' : ''"
+                    (click)="rowClick.emit(row?.number ?? i)">
+                    <td *ngFor="let header of headers" class="px-4 py-2">
+                        <div class="flex items-center gap-4">
+                            <div *ngIf="header.specialType === 'status'"
+                                [class]="`status-dot ${getStatusSeverity(row[header.id || ''] ?? (header.specialType ? '' : '-'))}`">
+                            </div>
+                            <p>{{ row[header.id || ''] ?? (header.specialType ? '' : '-')}}</p>
+                            <button *ngIf="(header.specialType === 'download') && !isNew(row.status)"
+                                (click)="handleDownload($event, i)" class="icon-button button_download">
+                                <lucide-angular [img]="lucideIcons.download" class="h-4 w-4" />
+                            </button>
+
+                            <!-- Dropdown button -->
+                            <div class="relative" *ngIf="header.specialType === 'claim'" #kebabActions>
+                                <button (click)="toggleDropdown($event, i)" class="icon-button icon-button--ellipsis">
+                                    <lucide-angular [img]="lucideIcons.verticalPoint" class="h-4 w-4" />
+                                </button>
+
+                                <div *ngIf="kebab[row.status_name]?.length > 0 && openDropdownIndex === i"
+                                    class="absolute right-8 -mt-8 p-4 z-25 bg-white shadow-lg rounded-md border border-gray-200 min-w-[190px]">
+                                    <div class="font-normal space-y-3">
+                                        <div *ngFor="let action of kebab[row.status_name]" class="flex items-center">
+                                            <button (click)="handleKebabAction($event, action.id, row.number)"
+                                                class="flex items-center gap-2">
+                                                <p class="text-sm text-gray-700 cursor-pointer"
+                                                    [ngClass]="{'text-red-600': action.id === 'returnClaim'}">{{
+                                                    action.label }}</p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+
+            <!-- No data template -->
+            <ng-template #noData>
+                <tr>
+                    <td [attr.colspan]="headers.length" class="text-center p-12 text-gray-500">
+                        No element found!
+                    </td>
+                </tr>
+            </ng-template>
+        </tbody>
+        <tfoot>
+            <tr *ngFor="let row of footerRows">
+                <td *ngFor="let header of headers" class="px-4 py-2">
+                    <p class="font-bold">
+                        {{ row[header.id] ?? '' }}
+                    </p>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div *ngIf="!!paginationOptions" class="pagination__container flex items-center justify-end gap-4">
+        Total {{ rows.length }} items
+        <pagination-controls (pageChange)="paginate.emit($event)" [responsive]="true" previousLabel="<"
+            nextLabel=">"></pagination-controls>
+        <mat-select (selectionChange)="handleItemsPerPageChange($event)" [value]="paginationOptions.itemsPerPage">
+            <mat-option *ngFor="let option of iPPOptions" [value]="option">
+                {{ option }} / page
+            </mat-option>
+        </mat-select>
+    </div>
+</div>

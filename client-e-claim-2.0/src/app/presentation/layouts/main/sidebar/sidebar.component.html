@@ -1,0 +1,14 @@
+<aside class="sidebar" [class.collapsed]="!(sidebarService.isOpen$ | async)">
+    <div class="logo pl-3">
+        <h2><a routerLink="/">SWAN</a></h2>
+    </div>
+
+    <ul class="nav">
+        <li *ngFor="let item of menuItems">
+            <a [routerLink]="item.link" routerLinkActive="active" class="nav-link">
+                <i class="{{ item.icon }}"></i>
+                <span>{{ item.label }}</span>
+            </a>
+        </li>
+    </ul>
+</aside>

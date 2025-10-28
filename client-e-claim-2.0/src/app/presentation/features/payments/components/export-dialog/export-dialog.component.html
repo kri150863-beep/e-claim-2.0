@@ -1,0 +1,84 @@
+
+<form [formGroup]="exportForm" (ngSubmit)="onSubmit()">
+    <h2 class="text-xl" mat-dialog-title>Export payment list</h2>
+    <mat-dialog-content>
+        <div class="grid grid-cols-2 gap-10">
+            <div class="field-container">
+                <p><span class="text-red-500">*</span> From</p>
+                <div class="relative items-center">
+                    <span class="absolute inset-y-0 right-0 pl-3 flex items-center text-gray-400 mt-1">
+                        <mat-datepicker-toggle matIconSuffix [for]="startpicker"></mat-datepicker-toggle>
+                    </span>
+                    <input required name="startDate" formControlName="startDate" matInput [matDatepicker]="startpicker" placeholder="Select date"
+                        autocomplete="off"
+                        [max]="startMaxDate()"
+                        [ngClass]="{
+                            'border-red-500': startDate?.invalid && startDate?.touched,
+                            'border-gray-300': !(startDate?.invalid && startDate?.touched)
+                        }"
+                        class="w-full border border-gray-300 rounded-md placeholder-gray-400 pl-2 pe-4 py-2 focus:outline-none"
+                    >
+                    <mat-datepicker #startpicker></mat-datepicker>
+                </div>
+            </div>
+            <div class="field-container">
+                <p><span class="text-red-500">*</span> To</p>
+                <div class="relative items-center">
+                    <span class="absolute inset-y-0 right-0 pl-3 flex items-center text-gray-400 mt-1">
+                        <mat-datepicker-toggle matIconSuffix [for]="endpicker">
+                            <lucide-angular [img]="icons.calendar" class="h-4 w-4" />
+                        </mat-datepicker-toggle>
+                    </span>
+                    <input required name="endDate" formControlName="endDate" matInput [matDatepicker]="endpicker" placeholder="Select date"
+                    autocomplete="off"
+                        [min]="endMinDate()"
+                        [max]="today"
+                        [ngClass]="{
+                            'border-red-500': endDate?.invalid && endDate?.touched,
+                            'border-gray-300': !(endDate?.invalid && endDate?.touched)
+                        }"
+                        class="w-full border border-gray-300 rounded-md placeholder-gray-400 pl-2 pe-4 py-2 focus:outline-none"
+                    >
+                    <mat-datepicker #endpicker></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        <div [class]="`grid grid-cols-${['garage', 'spare_part'].includes(className) ? 2 : 1} gap-10`">
+            <div class="field-container">
+                <p><span class="text-red-500">*</span> Format</p>
+                <mat-select 
+                    name="format"
+                    formControlName="format"
+                    required
+                    [ngClass]="{
+                        'border-red-500': format?.invalid && format?.touched,
+                        'border-gray-300': !(format?.invalid && format?.touched)
+                    }"
+                    class="w-full border border-gray-300 rounded-md placeholder-gray-400 pl-2 pe-4 py-2 focus:outline-none"
+                >
+                    <mat-option value="" disabled selected hidden>Select</mat-option>
+                    <mat-option *ngFor="let option of supportedFormats" [value]="option">{{option}}</mat-option>
+                </mat-select>
+            </div>
+            <div class="field-container" *ngIf="['garage', 'spare_part'].includes(className)">
+                <p><span class="text-red-500">*</span> Status</p>
+                <mat-select 
+                    name="status"
+                    formControlName="status"
+                    [ngClass]="{
+                        'border-red-500': status?.invalid && status?.touched,
+                        'border-gray-300': !(status?.invalid && status?.touched)
+                    }"
+                    class="w-full border rounded-md pl-2 pe-4 py-2 focus:outline-none"
+                >
+                    <mat-option value="" disabled selected hidden>Select</mat-option>
+                    <mat-option *ngFor="let option of stats()" [value]="option">{{ option }}</mat-option>
+                </mat-select>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <app-button variant="outlined" type="button" (click)="close()">Cancel</app-button>
+        <app-button variant="contained" type="submit">Ok</app-button>
+    </mat-dialog-actions>
+</form>

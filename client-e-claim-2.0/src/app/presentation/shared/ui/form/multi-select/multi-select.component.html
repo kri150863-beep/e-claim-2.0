@@ -1,0 +1,18 @@
+<div class="multi-select-container" [class.disabled]="disabled">
+    <div class="selected-options items-center" (click)="toggleDropdown()">
+        <span *ngFor="let option of selectedOptions" (click)="removeOption(option, $event)" class="bg-blue-100 text-blue-800 px-2 py-1 rounded mr-1 text-sm">
+        {{ option }}
+        </span>
+        <lucide-angular [img]="icons.chevron" class="ml-auto h-4 w-4 cursor-pointer" />
+  </div>
+  
+  <div *ngIf="dropdownOpen" class="options-container shadow-md z-40">
+    <div *ngFor="let option of options" 
+         class="option"
+         [class.selected]="isSelected(option)"
+         (click)="toggleSelection(option)">
+      {{ option }}
+      <span *ngIf="isSelected(option)" class="checkmark">✓</span>
+    </div>
+  </div>
+</div>

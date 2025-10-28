@@ -1,0 +1,31 @@
+button {
+    cursor: pointer;
+    padding: 7px 15px;
+    border-radius: 7px;
+    transition: .2s;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &.button_contained {
+        background-color: var(--tp-bg-primary);
+        color: white;
+        &:hover {
+            background-color: color-mix(in srgb, var(--tp-bg-primary) 90%, transparent);
+        }
+    }
+    &.button_outlined {
+        border: 1px solid lightgray;
+        &:hover {
+            background-color: color-mix(in srgb, lightgray 25%, transparent);
+        }
+    }
+    &.button_outlined-primary {
+        border: 1px solid var(--tp-bg-primary);
+        color: var(--tp-bg-primary);
+        &:hover{
+            background-color: color-mix(in srgb, var(--tp-bg-primary) 15%, transparent);
+        }
+    }
+}

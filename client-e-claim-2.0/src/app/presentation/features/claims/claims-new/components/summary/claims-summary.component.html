@@ -1,0 +1,95 @@
+<main class="flex-1">
+  <div class="flex items-center mb-4">
+    <h2 class="text-xl font-medium mr-2">{{summary?.vehicle_information?.claim_number}}</h2>
+  </div>
+  <div class="bg-white rounded-xl shadow p-4">
+    <div class="mb-8">
+      <h3 class="text-lg font-semibold mb-4">General information</h3>
+      <div class="grid grid-cols-4 gap-4 text-sm">
+        <div><span class="text-gray-500">Name</span><br><strong>{{summary?.vehicle_information?.name}}</strong></div>
+        <div><span class="text-gray-500">Make</span><br>{{summary?.vehicle_information?.make}}</div>
+        <div><span class="text-gray-500">Model</span><br><strong>{{summary?.vehicle_information?.model}}</strong></div>
+        <div><span class="text-gray-500">Condition of
+            vehicle</span><br><strong>{{summary?.vehicle_information?.condition_of_vehicle}}</strong></div>
+        <div><span class="text-gray-500">Chasis number</span><br>{{summary?.vehicle_information?.chassis_no}}</div>
+        <div><span class="text-gray-500">Point of impact</span><br>{{summary?.vehicle_information?.point_of_impact}}
+        </div>
+        <div><span class="text-gray-500">Place of survey</span><br>{{summary?.vehicle_information?.place_of_survey}}
+        </div>
+        <div><span class="text-gray-500">Is the vehicle total
+            loss?</span><br><strong>{{summary?.vehicle_information?.is_the_vehicle_total_loss ? 'Yes' : 'No'}}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Survey Information -->
+    <div class="mb-4">
+      <h3 class="text-lg font-semibold mb-4">Survey information</h3>
+      <div class="grid grid-cols-4 gap-4 text-sm">
+        <div><span class="text-gray-500">Invoice number</span><br><strong>{{summary?.survey_information?.invoice_number}}</strong></div>
+        <div><span class="text-gray-500">Survey type</span><br><strong>{{summary?.survey_information?.survey_type}}</strong></div>
+        <div><span class="text-gray-500">EOR value</span><br><strong>Rs {{summary?.survey_information?.eor_value}}</strong></div>
+        <div><span class="text-gray-500">Date & time of survey</span><br>{{summary?.survey_information?.date_of_survey}} - {{summary?.survey_information?.time_of_survey}}</div>
+        <div><span class="text-gray-500">Pre-Accident value</span><br><strong>Rs {{summary?.survey_information?.pre_accident_valeur}}</strong></div>
+        <div><span class="text-gray-500">Wreck value</span><br><strong>Rs {{summary?.survey_information?.wrech_value}}</strong></div>
+        <div><span class="text-gray-500">Excess applicable</span><br><strong>Rs {{summary?.survey_information?.excess_applicable}}</strong></div>
+        <div><span class="text-gray-500">Showroom price</span><br><strong>Rs {{summary?.survey_information?.showroom_price}}</strong></div>
+      </div>
+    </div>
+
+    <div class="my-8">
+      <h3 class="text-lg font-semibold">Document list</h3>
+    </div>
+
+    <div class="overflow-x-auto mb-4">
+      <table class="min-w-full border border-gray-200 rounded-lg">
+        <thead class="text-left tracking-wide bg-gray-100">
+          <tr>
+            <th></th>
+            <th class="px-4 py-3">
+              Cost (MUR)
+            </th>
+            <th class="px-4 py-3">
+              Discount (MUR)
+            </th>
+            <th class="px-4 py-3">
+              VAT (MUR)
+            </th>
+            <th class="px-4 py-3">
+              Total (MUR)
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">Parts</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.part?.cost_part}}</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.part?.discount_part}}</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.part?.vat_part}}</td>
+            <td class="text-primary px-4 py-2">
+              {{summary?.grand_total?.part?.part_total}}
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">Labour details</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.labour?.cost_labour}}</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.labour?.discount_labour}}</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.labour?.vat_labour}}</td>
+            <td class="text-primary px-4 py-2">
+              {{summary?.grand_total?.labour?.labour_total}}
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">Grand Total</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.overall?.cost_total}}</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.overall?.discount_total}}</td>
+            <td class="px-4 py-3">{{summary?.grand_total?.overall?.vat_total}}</td>
+            <td class="text-primary px-4 py-2">
+              {{summary?.grand_total?.overall?.total}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

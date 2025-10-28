@@ -1,0 +1,71 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+
+parameters:
+    profile_images_directory: '%kernel.project_dir%/public/uploads/profile'
+
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    annotation_reader:
+        class: Doctrine\Common\Annotations\AnnotationReader
+        public: true
+
+    doctrine.annotation_reader:
+        alias: annotation_reader
+    
+    App\Service\ClaimUserDbService:
+        arguments:
+            $claimUserDbConnection: '@doctrine.dbal.claim_user_db_connection'
+    
+    App\Service\ClaimDetailsService:
+        arguments:
+            $claimDetailsConnection: '@doctrine.dbal.default_connection'
+
+    App\EventListener\JWTCreatedListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    App\Security\CustomAuthenticationFailureHandler:
+        tags: ['monolog.logger']
+
+    App\Security\CustomAuthenticationSuccessHandler:
+        autowire: true
+        autoconfigure: true
+
+    App\Controller\Auth\TokenRefreshController:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    App\Controller\Auth\LogOutController:
+        autowire: true
+        autoconfigure: true
+        public: true
+    
+    App\EventListener\JwtExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: 100 }
+            
+    App\Service\MercureTokenGenerator:
+        arguments:
+            $mercureUrl: '%env(MERCURE_URL)%'
+            $mercureSecret: '%env(MERCURE_JWT_SECRET)%'

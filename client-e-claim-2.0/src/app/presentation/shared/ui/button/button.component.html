@@ -1,0 +1,9 @@
+<button
+    class="button_{{variant}}"
+    [type]="type"
+    (click)="handleClick($event)"
+>
+    <ng-content select="[start-icon]"></ng-content>
+    <ng-content></ng-content>
+    <ng-content select="[end-icon]"></ng-content>
+</button>

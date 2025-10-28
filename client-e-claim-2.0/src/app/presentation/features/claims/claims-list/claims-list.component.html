@@ -1,0 +1,36 @@
+<main class="flex-1">
+    <p class="mb-4">{{ overviewTitle }}</p>
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <status-card
+          *ngFor="let card of cards"
+          [label]="card.name"
+          [count]="card.count"
+          [isSelected]="currentStatus == card.id"
+          (click)="handleCurrentStatusChange(card.id)"
+      >
+      </status-card>
+    </div>
+    <div class="flex justify-between items-center">
+      <p>{{ listTitle }}</p>
+    </div>
+    <app-table
+      [headers]="displayedColumnProps()"
+      [clickableRow]="true"
+      [rows]="formatDatas(filteredClaims)"
+      (rowClick)="onClaimsDetail($event)"
+      (sort)="onSort($event)"
+      (search)="onSearch($event)"
+      (filter)="onFilter($event)"
+      (action)="onKebabAction($event)"
+      [statusSeverity]="statusSeverity"
+      [kebab]="kebab"
+      [statusOptions]="statusFilterOptions"
+      [paginationOptions]="{
+        itemsPerPage: pageSize,
+        currentPage: currentPage,
+        itemsPerPageOptions: [6, 8, 10],
+        totalItems: totalClaims
+      }"
+      (paginate)="onPageChange($event)"
+    />
+</main>

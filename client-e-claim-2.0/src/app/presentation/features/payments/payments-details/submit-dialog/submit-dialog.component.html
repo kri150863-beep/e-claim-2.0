@@ -1,0 +1,15 @@
+<mat-dialog-content>
+    <div class="flex gap-4">
+      <span class="icon_check mt-1">
+        <mat-icon>check_circle</mat-icon>
+      </span>
+      <p class="text-xl font-bold">Invoice submitted</p>
+    </div>
+    <div class="flex gap-4">
+      <span class="w-7"></span>
+      <p>You will receive a notification when your invoice ({{ invoiceId }}) status is updated</p>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <app-button variant="contained" (click)="handleClose()">Close</app-button>
+</mat-dialog-actions>

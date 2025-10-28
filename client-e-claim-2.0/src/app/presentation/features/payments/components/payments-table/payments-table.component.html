@@ -1,0 +1,15 @@
+<app-table
+    [headers]="displayedColumnProps()"
+    [rows]="formatDatas(payments)"
+    [statusSeverity]="statusSeverity"
+    [clickableRow]="true"
+    (rowClick)="onPaymentDetail($event)"
+    (sort)="sort.emit($event)"
+    (download)="onDownload($event)"
+    [paginationOptions]="{
+      itemsPerPage: itemsPerPage,
+      currentPage: currentPage,
+      itemsPerPageOptions: [6, 8, 10]
+    }"
+    (paginate)="paginate.emit($event)"
+></app-table>

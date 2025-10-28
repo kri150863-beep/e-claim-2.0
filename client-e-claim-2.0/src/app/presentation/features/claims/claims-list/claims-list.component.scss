@@ -1,0 +1,20 @@
+table thead{
+    background-color: var(--tp-bg-gray-1);
+}
+
+table thead th{
+    border-bottom: 1px solid var(--tp-gray-1);
+}
+
+table tr {
+    border-bottom: 1px solid var(--tp-gray-1);
+}
+
+table tr td,
+table tr th {
+    padding: 17px;
+}
+
+table tbody tr .actions-colum {
+    z-index: 10;
+}

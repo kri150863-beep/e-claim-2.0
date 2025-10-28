@@ -1,0 +1,27 @@
+<div class="mb-6 flex-1">
+    <div class="mb-4">
+        <span>Overview</span> /
+        <span class="font-semibold">Profile</span>
+    </div>
+    <button (click)="onBackToClaimList()"
+        class="border border-blue-900 text-blue-900 px-4 py-1 rounded hover:bg-gray-100 text-sm p-2">
+        ← Back
+    </button>
+</div>
+
+<div class="settings-container bg-white min-h-fit">
+    <aside class="sidebar">
+        <ul class="tab-list">
+            <li *ngFor="let tab of tabs" [class.active]="tab.id === selectedTab" (click)="selectTab(tab.id)">
+                {{ tab.label }}
+            </li>
+        </ul>
+    </aside>
+
+    <section class="content px-6 pt-2 pb-12">
+        <app-account-info [currentUser]="currentUser" *ngIf="selectedTab === 'account'"></app-account-info>
+        <app-financial-info *ngIf="selectedTab === 'financial'"></app-financial-info>
+        <app-admin-settings [currentUser]="currentUser" *ngIf="selectedTab === 'admin'"></app-admin-settings>
+        <app-security-settings [currentUser]="currentUser" *ngIf="selectedTab === 'security'"></app-security-settings>
+    </section>
+</div>

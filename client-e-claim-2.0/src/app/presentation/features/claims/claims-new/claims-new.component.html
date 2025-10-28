@@ -1,0 +1,76 @@
+<main class="flex-1">
+  <div class="mb-6 flex-1">
+    <div class="mb-4">
+      <span class="text-gray-500">Overview</span> /
+      <span class="font-semibold">{{claimId}}</span>
+    </div>
+  </div>
+
+  <div class="m-auto stepper-container stepper pb-18">
+    <div class="step" *ngFor="let step of steps; let i = index">
+      <div class="relative">
+        <!-- Circle -->
+        <div class="circle" [ngClass]="{ 'active': currentStep === i + 1, 'completed': currentStep > i + 1 }">
+        </div>
+
+        <!-- Label -->
+        <span class="label" [ngClass]="{ 'active-text': currentStep === i + 1 }">
+          {{ step.label }}
+        </span>
+      </div>
+
+      <!-- Connector -->
+      <div class="w-full line" *ngIf="i < steps.length - 1" [ngClass]="{ 'filled': currentStep > i + 1 }">&nbsp;
+      </div>
+    </div>
+  </div>
+
+  <div class="">
+    <app-claims-vehicule
+      *ngIf="activeView === ViewType.VEHICLE && report?.vehicle_information"
+      [vehicleInfo]="report?.vehicle_information"
+      (formSubmitted)="onFormSubmitted($event)" />
+
+    <app-claims-survey
+      *ngIf="activeView === ViewType.SURVEY && report?.survey_information"
+      [surveyInfo]="report?.survey_information"
+      (formSubmitted)="onFormSubmitted($event)" />
+
+    <app-claims-repaire
+      *ngIf="activeView === ViewType.REPAIR && report?.repair_estimate"
+      [repaireInfo]="report?.repair_estimate"
+      [additionalLabourInfo]="report?.additional_labour_details"
+      (formSubmitted)="onFormSubmitted($event)" />
+
+    <app-claims-summary *ngIf="activeView === ViewType.SUMMARY" [summary]="report"/>
+  </div>
+
+  <div class="flex justify-between">
+    <div class="flex space-x-6 py-6">
+      <button *ngIf="currentStep === 4"
+        class="flex items-center border-2 border-dotted border-gray-300 bg-white px-6 py-2 rounded hover:bg-gray-100 cursor-pointer"
+        (click)="onBackToClaimList()">
+        <mat-icon start-icon class="mr-2">mail_outline</mat-icon>
+        Send mail
+      </button>
+      <button *ngIf="currentStep === 4"
+        class="flex items-center border-2 border-dotted border-gray-300 px-6 py-2 bg-white rounded hover:bg-gray-100 cursor-pointer"
+        (click)="onPrevious()">
+        <mat-icon start-icon class="mr-2">save_alt</mat-icon>
+        Download
+      </button>
+    </div>
+
+    <div class="flex justify-end space-x-6 py-6">
+      <button class="px-6 py-2 rounded hover:bg-gray-100 cursor-pointer"
+        [ngClass]="{'border border-gray-300': currentStep === 1}" (click)="onBackToClaimList()">Exit</button>
+      <button *ngIf="currentStep > 1" class="border border-gray-300 px-6 py-2 rounded hover:bg-gray-100 cursor-pointer"
+        (click)="onPrevious()">Back</button>
+      <button class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-hover cursor-pointer"
+        [ngClass]="{'hidden': currentStep === 4}" (click)="onNext()">Next</button>
+      <button *ngIf="currentStep === 4"
+        class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-hover cursor-pointer"
+        (click)="onFormSubmitted()">Submit</button>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,162 @@
+<!-- Form Section -->
+<main class="flex-1 bg-white rounded-xl shadow">
+  <h2 class="text-lg font-semibold border-b border-gray-200 px-6 py-3">Vehicle details</h2>
+
+  <form [formGroup]="vehicleForm" class="py-4" (ngSubmit)="submitForm()">
+    <div class="grid grid-cols-3 gap-18 px-6 pb-2">
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Make</label>
+        <input value="2,000" formControlName="make"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('make')}" />
+        <div *ngIf="isFieldInvalid('make')" class="text-red-500 text-xs mt-1">
+          Make is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Model</label>
+        <input value="2,000" formControlName="model"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('model')}" />
+        <div *ngIf="isFieldInvalid('model')" class="text-red-500 text-xs mt-1">
+          Model is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>CC</label>
+        <input value="2,000" formControlName="cc"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('cc')}" />
+        <div *ngIf="isFieldInvalid('cc')" class="text-red-500 text-xs mt-1">
+          CC is required
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-18 px-6 py-2">
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Fuel type</label>
+        <input value="2,000" formControlName="fuelType"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('fuelType')}" />
+        <div *ngIf="isFieldInvalid('fuelType')" class="text-red-500 text-xs mt-1">
+          Fuel type is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Transmission</label>
+        <input value="2,000" formControlName="transmission"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('transmission')}" />
+        <div *ngIf="isFieldInvalid('transmission')" class="text-red-500 text-xs mt-1">
+          Transmission is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Engine number</label>
+        <input value="4856 MLA 78" formControlName="engineNo"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('engineNo')}" />
+        <div *ngIf="isFieldInvalid('engineNo')" class="text-red-500 text-xs mt-1">
+          Engine number is required
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-18 px-6 py-2">
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Chasis number</label>
+        <input formControlName="chassisNo" value="4878"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('chassisNo')}" />
+        <div *ngIf="isFieldInvalid('chassisNo')" class="text-red-500 text-xs mt-1">
+          Chassis number is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Vehicle number</label>
+        <input value="1 JN 24" formControlName="vehicleNo"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg bg-gray-100 text-gray-600"
+          [ngClass]="{'border-red-500': isFieldInvalid('vehicleNo')}" />
+        <div *ngIf="isFieldInvalid('vehicleNo')" class="text-red-500 text-xs mt-1">
+          Vehicle number is required
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-18 px-6 py-2">
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Color</label>
+        <input placeholder="E.g: Red" formControlName="color"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+          [ngClass]="{'border-red-500': isFieldInvalid('color')}" />
+        <div *ngIf="isFieldInvalid('color')" class="text-red-500 text-xs mt-1">
+          Color is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Odometer reading</label>
+        <div class="flex justify-end items-center relative">
+          <input placeholder="E.g: 50,000" formControlName="odometerReading" type="text"
+            class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+            [ngClass]="{'border-red-500': isFieldInvalid('odometerReading')}" />
+          <span class="absolute mt-1 mr-2">Km</span>
+        </div>
+        <div *ngIf="isFieldInvalid('odometerReading')" class="text-red-500 text-xs mt-1">
+          Odometer reading is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Is the vehicle total loss?</label>
+        <div class="mt-2 space-x-4">
+          <label class="inline-flex items-center">
+            <input type="radio" formControlName="isTotalLoss" [value]="'No'" class="form-radio" /> <span
+              class="ml-2">No</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="radio" formControlName="isTotalLoss" [value]="'Yes'" class="form-radio" /> <span
+              class="ml-2">Yes</span>
+          </label>
+        </div>
+        <div *ngIf="isFieldInvalid('isTotalLoss')" class="text-red-500 text-xs mt-1">
+          Please select an option
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-18 px-6 py-2 items-end">
+      <div>
+        <label class="text-sm font-medium">
+          <span class="text-red-500 mr-2">*</span>Condition of vehicle
+        </label>
+        <select formControlName="conditionOfVehicle"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+          [ngClass]="{'border-red-500': isFieldInvalid('conditionOfVehicle')}">
+          <option value="">Select</option>
+          <option value="As new">As new</option>
+          <option value="Excellent">Excellent</option>
+          <option value="Fair">Fair</option>
+          <option value="Good">Good</option>
+          <option value="Poor">Poor</option>
+        </select>
+        <div *ngIf="isFieldInvalid('conditionOfVehicle')" class="text-red-500 text-xs mt-1">
+          Condition of vehicle is required
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Place of survey</label>
+        <input placeholder="E.g: Port - Louis" formControlName="placeOfSurvey"
+          class="w-full mt-1 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+          [ngClass]="{'border-red-500': isFieldInvalid('placeOfSurvey')}" />
+        <div *ngIf="isFieldInvalid('placeOfSurvey')" class="text-red-500 text-xs mt-1">
+          Place of survey is required
+        </div>
+      </div>
+      <div class="">
+        <label class="text-sm font-medium"><span class="text-red-500 mr-2">*</span>Point of impact</label>
+        <textarea placeholder="E.g: Rear bumper" formControlName="pointOfImpact"
+          class="w-full mt-2 border border-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+          [ngClass]="{'border-red-500': isFieldInvalid('pointOfImpact')}"></textarea>
+        <div *ngIf="isFieldInvalid('pointOfImpact')" class="text-red-500 text-xs mt-1">
+          Point of impact is required
+        </div>
+      </div>
+    </div>
+  </form>
+</main>
