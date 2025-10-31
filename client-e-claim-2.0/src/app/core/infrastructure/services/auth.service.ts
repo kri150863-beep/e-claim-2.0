@@ -8,6 +8,8 @@ import {
   filter,
   switchMap,
   distinctUntilChanged,
+  catchError,
+  throwError,
 } from 'rxjs';
 
 import { User } from '../../domain/entities/user.entity';
@@ -94,6 +96,12 @@ export class AuthService {
         this.currentUserSubject.next(null);
         this.clearTokens();
         this.router.navigate(['/auth/login']);
+      }),
+      catchError((error) => {
+        this.currentUserSubject.next(null);
+        this.clearTokens();
+        this.router.navigate(['/auth/login']);
+        return throwError(() => error);
       })
     );
   }

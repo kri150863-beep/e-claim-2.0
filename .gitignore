@@ -10,8 +10,8 @@
 
 # Node
 /client-e-claim-2.0/node_modules
-/client-e-claim-2.0npm-debug.log
-/client-e-claim-2.0yarn-error.log
+/client-e-claim-2.0/npm-debug.log
+/client-e-claim-2.0/yarn-error.log
 
 # IDEs and editors
 .idea/

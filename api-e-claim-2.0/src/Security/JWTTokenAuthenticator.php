@@ -36,6 +36,7 @@ class JWTTokenAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
+        // var_dump($request->headers->all());
         return $request->headers->has('Authorization');
     }
 
